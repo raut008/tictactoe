@@ -13,8 +13,10 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "env-cmd -f environments/.env.staging react-scripts start",
+    "build:dev": "webpack --config webpack.config.js --env ENV_FILE=development",
+    "build:staging": "webpack --config webpack.config.js --env ENV_FILE=staging",
+    "build": "webpack --config webpack.config.js --env ENV_FILE=production",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -35,5 +37,14 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "copy-webpack-plugin": "^13.0.0",
+    "dotenv-webpack": "^8.1.0",
+    "html-webpack-plugin": "^5.6.3",
+    "sass": "^1.89.0",
+    "terser-webpack-plugin": "^5.3.14",
+    "webpack": "^5.99.8",
+    "webpack-cli": "^6.0.1"
   }
 }
