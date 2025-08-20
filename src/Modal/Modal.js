@@ -1,5 +1,6 @@
 // Modal.js
 import React from "react";
+import Icon from "../Components/Icon/Icon";
 import styles from "./Modal.module.scss";
 
 const Modal = ({ isOpen, onClose, children }) => {
@@ -9,7 +10,7 @@ const Modal = ({ isOpen, onClose, children }) => {
     <div className={styles.modalOverlay} onClick={onClose}>
       <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
         <button className={styles.modalClose} onClick={onClose}>
-          ×
+          <Icon type="Close" />
         </button>
         {children}
       </div>

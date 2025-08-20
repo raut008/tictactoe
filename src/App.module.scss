@@ -12,6 +12,7 @@
   border-radius: 12px;
   box-shadow: 8px 8px 16px #000000, -8px -8px 16px #ffffff;
   margin-bottom: 32px;
+  max-width: 300px;
 }
 
 .row {
@@ -29,6 +30,7 @@
   font-size: 16px;
   font-weight: bold;
   transition: all 0.3s ease;
+  flex: 1;
 
   &.selected {
     background-color: #fff;
@@ -43,6 +45,11 @@
   align-items: center;
   min-height: 100vh;
   background: #f0f0f0;
+}
+
+.title {
+  font-size: 48px;
+  font-weight: 800;
 }
 
 .resetButton {

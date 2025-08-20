@@ -83,25 +83,18 @@ function App() {
 
   return (
     <div className={styles.appWrapper}>
-      <h1>TIC TAC TOE</h1>
+      <h1 className={styles.title}>TIC TAC TOE</h1>
       <div className={styles.container}>
-        <h3>GAME MODE:</h3>
         <div className={styles.row}>
           <button className={`${styles.button} ${mode === "double" ? styles.selected : ""}`} onClick={() => handleSelect("double")}>
             <div>Double Mode</div>
-            <div style={{ fontSize: "12px" }}>( Player vs Player )</div>
           </button>
           <button className={`${styles.button} ${mode === "ai" ? styles.selected : ""}`} onClick={() => handleSelect("ai")}>
             <div>AI Mode</div>
-            <div style={{ fontSize: "12px" }}>( Player vs Computer )</div>
           </button>
         </div>
-        <button className={styles.resetButton} onClick={handleReset}>
-          Reset
-        </button>
         {mode === "ai" && (
           <>
-            <h3>SELECT PLAYER:</h3>
             <div className={styles.row}>
               <button
                 className={`${styles.button} ${playerChoice === "X" ? styles.selected : ""}`}
@@ -125,6 +118,9 @@ function App() {
             </div>
           </>
         )}
+        <button className={styles.resetButton} onClick={handleReset}>
+          RESTART
+        </button>
       </div>
       <Board gameBoard={gameBoard} handleClick={handleMove} />
       <Modal isOpen={result} onClose={() => handleReset()}>

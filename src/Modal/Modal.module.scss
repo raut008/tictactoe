@@ -1,5 +1,4 @@
-// Modal.module.scss
-
+// Base styles (already defined)
 .modalOverlay {
   position: fixed;
   top: 0;
@@ -41,6 +40,46 @@
   }
 }
 
+// 🔁 Responsive tweaks
+@media (max-width: 480px) {
+  .modalContent {
+    padding: 1.2rem;
+    max-width: 90%;
+    border-radius: 8px;
+  }
+
+  .modalClose {
+    font-size: 1.25rem;
+    top: 8px;
+    right: 12px;
+  }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+  .modalContent {
+    padding: 1.6rem;
+    max-width: 420px;
+    border-radius: 10px;
+  }
+
+  .modalClose {
+    font-size: 1.4rem;
+  }
+}
+
+@media (min-width: 769px) {
+  .modalContent {
+    padding: 2rem;
+    max-width: 500px;
+    border-radius: 12px;
+  }
+
+  .modalClose {
+    font-size: 1.5rem;
+  }
+}
+
+// 🎬 Animation
 @keyframes fadeIn {
   from {
     opacity: 0;
