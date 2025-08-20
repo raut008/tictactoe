@@ -1,3 +1,56 @@
-.App {
-  text-align: center;
+/* App.module.scss */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  background-color: #000;
+  color: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 8px 8px 16px #000000, -8px -8px 16px #ffffff;
+  margin-bottom: 32px;
+}
+
+.row {
+  display: flex;
+  gap: 16px;
+}
+
+.button {
+  padding: 12px 20px;
+  border: 2px solid #fff;
+  border-radius: 8px;
+  background-color: #000;
+  color: #fff;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  transition: all 0.3s ease;
+
+  &.selected {
+    background-color: #fff;
+    color: #000;
+  }
+}
+
+.appWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: #f0f0f0;
+}
+
+.resetButton {
+  padding: 12px 20px;
+  border: 2px solid #000;
+  border-radius: 8px;
+  background-color: #fff;
+  color: #000;
+  font-weight: bold;
+  cursor: pointer;
 }
