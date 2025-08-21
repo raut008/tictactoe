@@ -1,6 +1,6 @@
 // Modal.js
 import React from "react";
-import Icon from "../Components/Icon/Icon";
+import Icon from "../Icon/Icon";
 import styles from "./Modal.module.scss";
 
 const Modal = ({ isOpen, onClose, children }) => {

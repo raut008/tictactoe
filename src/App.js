@@ -1,8 +1,8 @@
 import React, { useCallback, useState } from "react";
 import styles from "./App.module.scss";
 import Board from "./Components/Board/Board";
+import Modal from "./Components/Modal/Modal";
 import Result from "./Components/Result/Result";
-import Modal from "./Modal/Modal";
 import { checkWinner, minmax } from "./utils";
 
 function App() {
@@ -47,8 +47,6 @@ function App() {
           result: aiResult,
         };
       }
-
-      console.log(updatedState, "updatedState");
 
       return updatedState;
     });
