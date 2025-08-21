@@ -1,5 +1,6 @@
 {
   "name": "react-app",
+  "homepage": "https://raut008.github.io/tictactoe",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -13,6 +14,8 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "env-cmd -f environments/.env.staging react-scripts start",
     "build:dev": "webpack --config webpack.config.js --env ENV_FILE=development",
     "build:staging": "webpack --config webpack.config.js --env ENV_FILE=staging",
@@ -41,6 +44,7 @@
   "devDependencies": {
     "copy-webpack-plugin": "^13.0.0",
     "dotenv-webpack": "^8.1.0",
+    "gh-pages": "^6.3.0",
     "html-webpack-plugin": "^5.6.3",
     "sass": "^1.89.0",
     "terser-webpack-plugin": "^5.3.14",
