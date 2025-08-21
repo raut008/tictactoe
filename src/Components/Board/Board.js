@@ -1,3 +1,4 @@
+import React from "react";
 import Empty from "../Empty/Empty";
 import Icon from "../Icon/Icon";
 import styles from "./Board.module.scss";
