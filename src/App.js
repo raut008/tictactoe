@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import styles from "./App.module.scss";
 import Board from "./Components/Board/Board";
 import Modal from "./Components/Modal/Modal";
@@ -25,32 +25,41 @@ function App() {
       newBoard[index] = prev.currentPlayer;
       const result = checkWinner(newBoard);
 
-      let nextPlayer = result ? null : prev.currentPlayer === "X" ? "O" : "X";
-
-      let updatedState = {
+      return {
         ...prev,
         gameBoard: newBoard,
-        currentPlayer: nextPlayer,
+        currentPlayer: result ? null : prev.currentPlayer === "X" ? "O" : "X",
         result,
       };
-
-      // AI move
-      if (prev.mode === "ai" && !result && nextPlayer !== prev.playerChoice) {
-        const aiMove = minmax(newBoard);
-        newBoard[aiMove] = nextPlayer;
-        const aiResult = checkWinner(newBoard);
-
-        updatedState = {
-          ...updatedState,
-          gameBoard: newBoard,
-          currentPlayer: aiResult ? null : prev.playerChoice,
-          result: aiResult,
-        };
-      }
-
-      return updatedState;
     });
   };
+
+  // --- AI logic separated into effect ---
+  useEffect(() => {
+    if (
+      gameState.mode === "ai" &&
+      !gameState.result &&
+      gameState.currentPlayer !== gameState.playerChoice
+    ) {
+      const timer = setTimeout(() => {
+        setGameState((prev) => {
+          const aiBoard = [...prev.gameBoard];
+          const aiMove = minmax(aiBoard);
+          aiBoard[aiMove] = prev.currentPlayer;
+          const aiResult = checkWinner(aiBoard);
+
+          return {
+            ...prev,
+            gameBoard: aiBoard,
+            currentPlayer: aiResult ? null : prev.playerChoice,
+            result: aiResult,
+          };
+        });
+      }, 500); // delay in ms
+
+      return () => clearTimeout(timer); // cleanup if state changes fast
+    }
+  }, [gameState]); // runs whenever state changes
 
   const handleReset = useCallback(() => {
     setGameState((prev) => {
@@ -84,10 +93,20 @@ function App() {
       <h1 className={styles.title}>TIC TAC TOE</h1>
       <div className={styles.container}>
         <div className={styles.row}>
-          <button className={`${styles.button} ${mode === "double" ? styles.selected : ""}`} onClick={() => handleSelect("double")}>
+          <button
+            className={`${styles.button} ${
+              mode === "double" ? styles.selected : ""
+            }`}
+            onClick={() => handleSelect("double")}
+          >
             <div>Double Mode</div>
           </button>
-          <button className={`${styles.button} ${mode === "ai" ? styles.selected : ""}`} onClick={() => handleSelect("ai")}>
+          <button
+            className={`${styles.button} ${
+              mode === "ai" ? styles.selected : ""
+            }`}
+            onClick={() => handleSelect("ai")}
+          >
             <div>AI Mode</div>
           </button>
         </div>
@@ -95,19 +114,37 @@ function App() {
           <>
             <div className={styles.row}>
               <button
-                className={`${styles.button} ${playerChoice === "X" ? styles.selected : ""}`}
-                onClick={() => setGameState((prev) => ({ ...prev, playerChoice: "X", gameBoard: board, currentPlayer: "X", result: null }))}
+                className={`${styles.button} ${
+                  playerChoice === "X" ? styles.selected : ""
+                }`}
+                onClick={() =>
+                  setGameState((prev) => ({
+                    ...prev,
+                    playerChoice: "X",
+                    gameBoard: board,
+                    currentPlayer: "X",
+                    result: null,
+                  }))
+                }
               >
                 Play as X
               </button>
               <button
-                className={`${styles.button} ${playerChoice === "O" ? styles.selected : ""}`}
+                className={`${styles.button} ${
+                  playerChoice === "O" ? styles.selected : ""
+                }`}
                 onClick={() =>
                   setGameState((prev) => {
                     const newBoard = [...board];
                     const aiMove = minmax(newBoard);
                     newBoard[aiMove] = "X";
-                    return { ...prev, playerChoice: "O", gameBoard: newBoard, currentPlayer: "O", result: null };
+                    return {
+                      ...prev,
+                      playerChoice: "O",
+                      gameBoard: newBoard,
+                      currentPlayer: "O",
+                      result: null,
+                    };
                   })
                 }
               >
