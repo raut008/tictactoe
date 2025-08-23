@@ -12,7 +12,7 @@
   border-radius: 12px;
   box-shadow: 8px 8px 16px #000000, -8px -8px 16px #ffffff;
   margin-bottom: 32px;
-  max-width: 300px;
+  min-width: 300px;
 }
 
 .row {
@@ -21,22 +21,29 @@
 }
 
 .button {
-  padding: 12px 20px;
+  width: 100px;        
+  height: 60px;        
+  padding: 0;
   border: 2px solid #fff;
-  border-radius: 8px;
+  border-radius: 12px;
   background-color: #000;
   color: #fff;
-  cursor: pointer;
-  font-size: 16px;
+  font-size: 18px;
   font-weight: bold;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
   transition: all 0.3s ease;
-  flex: 1;
 
   &.selected {
-    background-color: #fff;
-    color: #000;
-  }
+  background-color: #fff;
+  color: #000;
 }
+}
+
+
 
 .appWrapper {
   position: relative;

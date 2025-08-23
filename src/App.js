@@ -4,7 +4,7 @@ import Board from "./Components/Board/Board";
 import Icon from "./Components/Icon/Icon";
 import Modal from "./Components/Modal/Modal";
 import Result from "./Components/Result/Result";
-import { checkWinner, minmax } from "./utils";
+import { checkWinner, getAIMove } from "./utils";
 
 function App() {
   const board = Array(9).fill(null);
@@ -12,7 +12,10 @@ function App() {
     gameBoard: board,
     currentPlayer: "X",
     result: null,
-    mode: "double",
+    mode: {
+      type: "double",
+      difficulty: "easy",
+    },
     playerChoice: "X",
   });
 
@@ -40,7 +43,7 @@ function App() {
   // --- AI logic separated into effect ---
   useEffect(() => {
     if (
-      gameState.mode === "ai" &&
+      gameState.mode.type === "ai" &&
       !gameState.result &&
       gameState.currentPlayer !== gameState.playerChoice
     ) {
@@ -48,7 +51,11 @@ function App() {
       const timer = setTimeout(() => {
         setGameState((prev) => {
           const aiBoard = [...prev.gameBoard];
-          const aiMove = minmax(aiBoard);
+          const aiMove = getAIMove(
+            aiBoard,
+            prev.currentPlayer,
+            prev.mode.difficulty
+          );
           aiBoard[aiMove] = prev.currentPlayer;
           const aiResult = checkWinner(aiBoard);
 
@@ -60,11 +67,11 @@ function App() {
           };
         });
         setThinking(false);
-      }, 500); // delay in ms
+      }, 500);
 
-      return () => clearTimeout(timer); // cleanup if state changes fast
+      return () => clearTimeout(timer);
     }
-  }, [gameState]); // runs whenever state changes
+  }, [gameState]);
 
   const handleReset = useCallback(() => {
     setGameState((prev) => {
@@ -79,14 +86,17 @@ function App() {
 
   const handleSelect = useCallback(
     (selectedMode) => {
-      if (mode === selectedMode) return;
+      if (mode.type === selectedMode) return;
       setGameState((prev) => {
         return {
           ...prev,
           gameBoard: board,
           currentPlayer: "X",
           result: null,
-          mode: selectedMode,
+          mode: {
+            ...prev.mode,
+            type: selectedMode,
+          },
         };
       });
     },
@@ -100,7 +110,7 @@ function App() {
         <div className={styles.row}>
           <button
             className={`${styles.button} ${
-              mode === "double" ? styles.selected : ""
+              mode.type === "double" ? styles.selected : ""
             }`}
             onClick={() => handleSelect("double")}
           >
@@ -108,15 +118,53 @@ function App() {
           </button>
           <button
             className={`${styles.button} ${
-              mode === "ai" ? styles.selected : ""
+              mode.type === "ai" ? styles.selected : ""
             }`}
             onClick={() => handleSelect("ai")}
           >
             <div>AI Mode</div>
           </button>
         </div>
-        {mode === "ai" && (
+        {mode.type === "ai" && (
           <>
+            <div className={styles.row}>
+              <button
+                className={`${styles.button} ${
+                  mode.difficulty === "easy" ? styles.selected : ""
+                }`}
+                onClick={() =>
+                  setGameState((prev) => ({
+                    ...prev,
+                    gameBoard: board,
+                    result: null,
+                    mode: {
+                      ...prev.mode,
+                      difficulty: "easy",
+                    },
+                  }))
+                }
+              >
+                Easy
+              </button>
+              <button
+                className={`${styles.button} ${
+                  mode.difficulty === "hard" ? styles.selected : ""
+                }`}
+                onClick={() =>
+                  setGameState((prev) => ({
+                    ...prev,
+                    gameBoard: board,
+                    result: null,
+                    mode: {
+                      ...prev.mode,
+                      difficulty: "hard",
+                    },
+                  }))
+                }
+              >
+                Hard
+              </button>
+            </div>
             <div className={styles.row}>
               <button
                 className={`${styles.button} ${
@@ -141,7 +189,7 @@ function App() {
                 onClick={() =>
                   setGameState((prev) => {
                     const newBoard = [...board];
-                    const aiMove = minmax(newBoard);
+                    const aiMove = getAIMove(newBoard);
                     newBoard[aiMove] = "X";
                     return {
                       ...prev,
