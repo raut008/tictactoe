@@ -1,4 +1,4 @@
-function randomMove(board) {
+export function randomMove(board) {
   const nullIndices = board
     .map((val, idx) => (val === null ? idx : null))
     .filter((val) => val !== null);
@@ -27,6 +27,8 @@ function minimaxMove(board, player) {
       moves.push({ index: i, score: -result.score });
     }
   }
+
+  console.log(moves);
 
   // Choose the move with the highest score
   let bestMove = moves[0];

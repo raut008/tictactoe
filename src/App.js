@@ -4,7 +4,7 @@ import Board from "./Components/Board/Board";
 import Icon from "./Components/Icon/Icon";
 import Modal from "./Components/Modal/Modal";
 import Result from "./Components/Result/Result";
-import { checkWinner, getAIMove } from "./utils";
+import { checkWinner, getAIMove, randomMove } from "./utils";
 
 function App() {
   const board = Array(9).fill(null);
@@ -51,6 +51,17 @@ function App() {
       const timer = setTimeout(() => {
         setGameState((prev) => {
           const aiBoard = [...prev.gameBoard];
+          const bypassAIMode = aiBoard.every((cell) => cell === null);
+          if (bypassAIMode) {
+            const aiMove = randomMove(aiBoard);
+            aiBoard[aiMove] = prev.currentPlayer;
+            return {
+              ...prev,
+              gameBoard: aiBoard,
+              currentPlayer: prev.playerChoice,
+              result: null,
+            };
+          }
           const aiMove = getAIMove(
             aiBoard,
             prev.currentPlayer,
@@ -135,7 +146,9 @@ function App() {
                 onClick={() =>
                   setGameState((prev) => ({
                     ...prev,
+                    playerChoice: "X",
                     gameBoard: board,
+                    currentPlayer: "X",
                     result: null,
                     mode: {
                       ...prev.mode,
@@ -153,7 +166,9 @@ function App() {
                 onClick={() =>
                   setGameState((prev) => ({
                     ...prev,
+                    playerChoice: "X",
                     gameBoard: board,
+                    currentPlayer: "X",
                     result: null,
                     mode: {
                       ...prev.mode,
@@ -189,11 +204,7 @@ function App() {
                 onClick={() =>
                   setGameState((prev) => {
                     const newBoard = [...board];
-                    const aiMove = getAIMove(
-                      newBoard,
-                      prev.currentPlayer,
-                      prev.mode.difficulty
-                    );
+                    const aiMove = randomMove(newBoard);
                     newBoard[aiMove] = "X";
                     return {
                       ...prev,
