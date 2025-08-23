@@ -15,7 +15,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "predeploy": "npm run build",
+    "predeploy": "npm run build && cp CNAME build/",
     "deploy": "gh-pages -d build",
     "start": "env-cmd -f environments/.env.staging react-scripts start",
     "build:dev": "webpack --config webpack.config.js --env ENV_FILE=development",
