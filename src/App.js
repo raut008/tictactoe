@@ -189,7 +189,11 @@ function App() {
                 onClick={() =>
                   setGameState((prev) => {
                     const newBoard = [...board];
-                    const aiMove = getAIMove(newBoard);
+                    const aiMove = getAIMove(
+                      newBoard,
+                      prev.currentPlayer,
+                      prev.mode.difficulty
+                    );
                     newBoard[aiMove] = "X";
                     return {
                       ...prev,
