@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import styles from "./App.module.scss";
 import Board from "./Components/Board/Board";
+import Icon from "./Components/Icon/Icon";
 import Modal from "./Components/Modal/Modal";
 import Result from "./Components/Result/Result";
 import { checkWinner, minmax } from "./utils";
@@ -14,6 +15,8 @@ function App() {
     mode: "double",
     playerChoice: "X",
   });
+
+  const [thinking, setThinking] = useState(false);
 
   const { gameBoard, mode, playerChoice, result } = gameState;
 
@@ -41,6 +44,7 @@ function App() {
       !gameState.result &&
       gameState.currentPlayer !== gameState.playerChoice
     ) {
+      setThinking(true);
       const timer = setTimeout(() => {
         setGameState((prev) => {
           const aiBoard = [...prev.gameBoard];
@@ -55,6 +59,7 @@ function App() {
             result: aiResult,
           };
         });
+        setThinking(false);
       }, 500); // delay in ms
 
       return () => clearTimeout(timer); // cleanup if state changes fast
@@ -157,7 +162,16 @@ function App() {
           RESTART
         </button>
       </div>
-      <Board gameBoard={gameBoard} handleClick={handleMove} />
+      <div className={styles.boardWrapper}>
+        <Board gameBoard={gameBoard} handleClick={handleMove} />
+        {!!thinking && (
+          <div className={styles.loaderOverlay}>
+            <div className={styles.loader}>
+              <Icon type="Thinking" />
+            </div>
+          </div>
+        )}
+      </div>
       <Modal isOpen={result} onClose={() => handleReset()}>
         <Result winner={result} />
       </Modal>
