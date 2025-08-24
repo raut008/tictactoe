@@ -56,7 +56,7 @@ const icons = {
   ),
 };
 
-const Icon = ({ type = "X", size = 48, color = "currentColor" }) => {
+const Icon = ({ type, size = 48, color = "currentColor" }) => {
   const icon = icons[type];
 
   if (!icon) return null;

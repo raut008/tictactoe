@@ -1,4 +1,5 @@
 import React from "react";
+import APPCONSTANTS from "../../Constants/AppConstants";
 import Empty from "../Empty/Empty";
 import Icon from "../Icon/Icon";
 import styles from "./Board.module.scss";
@@ -15,7 +16,13 @@ const Board = ({ gameBoard, handleClick }) => {
               handleClick(index);
             }}
           >
-            {state === "X" ? <Icon type="X" /> : state === "O" ? <Icon type="O" /> : <Empty />}
+            {state === APPCONSTANTS.PLAYERS.X ? (
+              <Icon type={APPCONSTANTS.PLAYERS.X} />
+            ) : state === APPCONSTANTS.PLAYERS.O ? (
+              <Icon type={APPCONSTANTS.PLAYERS.O} />
+            ) : (
+              <Empty />
+            )}
           </div>
         );
       })}

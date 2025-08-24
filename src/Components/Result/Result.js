@@ -20,8 +20,8 @@ const Result = ({ winner }) => {
 
 const DrawSVG = () => (
   <>
-    <Icon type="X" />
-    <Icon type="O" />
+    <Icon type={APPCONSTANTS.PLAYERS.X} />
+    <Icon type={APPCONSTANTS.PLAYERS.O} />
   </>
 );
 
