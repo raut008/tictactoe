@@ -1,3 +1,5 @@
+import APPCONSTANTS from "../Constants/AppConstants";
+
 export function randomMove(board) {
   const nullIndices = board
     .map((val, idx) => (val === null ? idx : null))
@@ -9,40 +11,45 @@ export function randomMove(board) {
   return nullIndices[randomIndex];
 }
 
-function minimaxMove(board, player) {
-  const opponent = player === "X" ? "O" : "X";
+function minimaxMove(board, player, alpha = -Infinity, beta = Infinity) {
+  const opponent = player === APPCONSTANTS.PLAYERS.X ? APPCONSTANTS.PLAYERS.O : APPCONSTANTS.PLAYERS.X;
   const winner = checkWinner(board);
 
   if (winner === player) return { score: 1 };
   if (winner === opponent) return { score: -1 };
-  if (winner === "Draw") return { score: 0 };
+  if (winner === APPCONSTANTS.DRAW) return { score: 0 };
 
-  const moves = [];
+  let bestMove = null;
+  let bestScore = -Infinity;
 
   for (let i = 0; i < board.length; i++) {
     if (board[i] === null) {
       const newBoard = [...board];
       newBoard[i] = player;
-      const result = minimaxMove(newBoard, opponent);
-      moves.push({ index: i, score: -result.score });
+      const result = minimaxMove(
+        newBoard,
+        opponent,
+        -beta,
+        -Math.max(alpha, bestScore)
+      );
+      const moveScore = -result.score;
+
+      if (moveScore > bestScore) {
+        bestScore = moveScore;
+        bestMove = { index: i, score: moveScore };
+      }
+      if (bestScore >= beta) break; // prune branch
     }
   }
 
-  console.log(moves);
-
-  // Choose the move with the highest score
-  let bestMove = moves[0];
-  for (let move of moves) {
-    if (move.score > bestMove.score) bestMove = move;
-  }
   return bestMove;
 }
 
 export function getAIMove(board, player, difficulty) {
   switch (difficulty) {
-    case "easy":
+    case APPCONSTANTS.DIFFICULTIES.Easy:
       return randomMove(board);
-    case "hard":
+    case APPCONSTANTS.DIFFICULTIES.Hard:
       const move = minimaxMove(board, player);
       return move.index;
     default:
@@ -70,5 +77,5 @@ export const checkWinner = (board) => {
       return board[a];
     }
   }
-  return board.includes(null) ? null : "Draw";
+  return board.includes(null) ? null : APPCONSTANTS.DRAW;
 };

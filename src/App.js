@@ -4,19 +4,20 @@ import Board from "./Components/Board/Board";
 import Icon from "./Components/Icon/Icon";
 import Modal from "./Components/Modal/Modal";
 import Result from "./Components/Result/Result";
+import APPCONSTANTS from "./Constants/AppConstants";
 import { checkWinner, getAIMove, randomMove } from "./utils";
 
 function App() {
   const board = Array(9).fill(null);
   const [gameState, setGameState] = useState({
     gameBoard: board,
-    currentPlayer: "X",
+    currentPlayer: APPCONSTANTS.PLAYERS.X,
     result: null,
     mode: {
       type: "double",
-      difficulty: "easy",
+      difficulty: APPCONSTANTS.DIFFICULTIES.Easy,
     },
-    playerChoice: "X",
+    playerChoice: APPCONSTANTS.PLAYERS.X,
   });
 
   const [thinking, setThinking] = useState(false);
@@ -34,7 +35,11 @@ function App() {
       return {
         ...prev,
         gameBoard: newBoard,
-        currentPlayer: result ? null : prev.currentPlayer === "X" ? "O" : "X",
+        currentPlayer: result
+          ? null
+          : prev.currentPlayer === APPCONSTANTS.PLAYERS.X
+          ? APPCONSTANTS.PLAYERS.O
+          : APPCONSTANTS.PLAYERS.X,
         result,
       };
     });
@@ -89,7 +94,7 @@ function App() {
       return {
         ...prev,
         gameBoard: board,
-        currentPlayer: "X",
+        currentPlayer: APPCONSTANTS.PLAYERS.X,
         result: null,
       };
     });
@@ -102,7 +107,7 @@ function App() {
         return {
           ...prev,
           gameBoard: board,
-          currentPlayer: "X",
+          currentPlayer: APPCONSTANTS.PLAYERS.X,
           result: null,
           mode: {
             ...prev.mode,
@@ -141,18 +146,20 @@ function App() {
             <div className={styles.row}>
               <button
                 className={`${styles.button} ${
-                  mode.difficulty === "easy" ? styles.selected : ""
+                  mode.difficulty === APPCONSTANTS.DIFFICULTIES.Easy
+                    ? styles.selected
+                    : ""
                 }`}
                 onClick={() =>
                   setGameState((prev) => ({
                     ...prev,
-                    playerChoice: "X",
+                    playerChoice: APPCONSTANTS.PLAYERS.X,
                     gameBoard: board,
-                    currentPlayer: "X",
+                    currentPlayer: APPCONSTANTS.PLAYERS.X,
                     result: null,
                     mode: {
                       ...prev.mode,
-                      difficulty: "easy",
+                      difficulty: APPCONSTANTS.DIFFICULTIES.Easy,
                     },
                   }))
                 }
@@ -161,18 +168,20 @@ function App() {
               </button>
               <button
                 className={`${styles.button} ${
-                  mode.difficulty === "hard" ? styles.selected : ""
+                  mode.difficulty === APPCONSTANTS.DIFFICULTIES.Hard
+                    ? styles.selected
+                    : ""
                 }`}
                 onClick={() =>
                   setGameState((prev) => ({
                     ...prev,
-                    playerChoice: "X",
+                    playerChoice: APPCONSTANTS.PLAYERS.X,
                     gameBoard: board,
-                    currentPlayer: "X",
+                    currentPlayer: APPCONSTANTS.PLAYERS.X,
                     result: null,
                     mode: {
                       ...prev.mode,
-                      difficulty: "hard",
+                      difficulty: APPCONSTANTS.DIFFICULTIES.Hard,
                     },
                   }))
                 }
@@ -183,14 +192,14 @@ function App() {
             <div className={styles.row}>
               <button
                 className={`${styles.button} ${
-                  playerChoice === "X" ? styles.selected : ""
+                  playerChoice === APPCONSTANTS.PLAYERS.X ? styles.selected : ""
                 }`}
                 onClick={() =>
                   setGameState((prev) => ({
                     ...prev,
-                    playerChoice: "X",
+                    playerChoice: APPCONSTANTS.PLAYERS.X,
                     gameBoard: board,
-                    currentPlayer: "X",
+                    currentPlayer: APPCONSTANTS.PLAYERS.X,
                     result: null,
                   }))
                 }
@@ -199,18 +208,18 @@ function App() {
               </button>
               <button
                 className={`${styles.button} ${
-                  playerChoice === "O" ? styles.selected : ""
+                  playerChoice === APPCONSTANTS.PLAYERS.O ? styles.selected : ""
                 }`}
                 onClick={() =>
                   setGameState((prev) => {
                     const newBoard = [...board];
                     const aiMove = randomMove(newBoard);
-                    newBoard[aiMove] = "X";
+                    newBoard[aiMove] = APPCONSTANTS.PLAYERS.X;
                     return {
                       ...prev,
-                      playerChoice: "O",
+                      playerChoice: APPCONSTANTS.PLAYERS.O,
                       gameBoard: newBoard,
-                      currentPlayer: "O",
+                      currentPlayer: APPCONSTANTS.PLAYERS.O,
                       result: null,
                     };
                   })
