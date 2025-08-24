@@ -12,9 +12,11 @@ export function randomMove(board) {
 }
 
 function minimaxMove(board, player, alpha = -Infinity, beta = Infinity) {
-  const opponent = player === APPCONSTANTS.PLAYERS.X ? APPCONSTANTS.PLAYERS.O : APPCONSTANTS.PLAYERS.X;
+  const opponent =
+    player === APPCONSTANTS.PLAYERS.X
+      ? APPCONSTANTS.PLAYERS.O
+      : APPCONSTANTS.PLAYERS.X;
   const winner = checkWinner(board);
-
   if (winner === player) return { score: 1 };
   if (winner === opponent) return { score: -1 };
   if (winner === APPCONSTANTS.DRAW) return { score: 0 };
@@ -24,21 +26,17 @@ function minimaxMove(board, player, alpha = -Infinity, beta = Infinity) {
 
   for (let i = 0; i < board.length; i++) {
     if (board[i] === null) {
-      const newBoard = [...board];
-      newBoard[i] = player;
-      const result = minimaxMove(
-        newBoard,
-        opponent,
-        -beta,
-        -Math.max(alpha, bestScore)
-      );
-      const moveScore = -result.score;
+      board[i] = player;
+      const moveScore = -minimaxMove(board, opponent, -beta, -alpha).score;
+      board[i] = null;
 
       if (moveScore > bestScore) {
         bestScore = moveScore;
-        bestMove = { index: i, score: moveScore };
+        bestMove = { index: i, score: bestScore };
       }
-      if (bestScore >= beta) break; // prune branch
+
+      alpha = Math.max(alpha, moveScore);
+      if (beta <= alpha) break; // Alpha-Beta Pruning
     }
   }
 
